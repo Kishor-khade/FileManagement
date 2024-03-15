@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document List</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+
+    </style>
+
+</head>
+<body>
+    
+    {% if error_message %}
+        <p>{{ error_message }}</p>
+    {% endif %}
+        
+    <h1>Document List</h1>
+    <table>
+        <tr>
+          <th>Title</th>
+          <th>Created by</th>
+          <th>Content</th>
+          <th>Delete Content</th>
+        </tr>
+        {% for document in documents %}
+            <tr>
+                    <td>{{ document.title }}</td>
+                    <td>{{document.owner.user.username}}</td>
+                    
+                    <td>{{document.content}}</td>
+                    <td>
+                        {% if document.owner == request.user.userprofile %}
+                        <!--  <form action="{% url 'delete_document' document.id %}" method="post"> -->
+                            <!-- {% csrf_token %} -->
+                            <!-- <button type="submit">Delete</button> -->
+                            <!-- </form> --> 
+                            
+                            <form action="{% url 'delete_document' document.id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit">Delete</button>
+                            </form>
+                        {% endif %}
+
+                    </td>
+            </tr>
+        {% endfor %}
+      </table>
+    <a href="/upload"><h3>Upload Document</h3></a>
+    <a href="/logout"><h3>logout</h2></a>
+</body>
+</html>
+

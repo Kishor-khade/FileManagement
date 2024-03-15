@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Dashboard</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Welcome to the Staff Dashboard</h1>
+    
+    <p>Hello, {{ request.user.username }}!</p>
+    <h1>Owner Name</h1>
+    <p>The owner of the staff member is: {{ owner_name }}</p>
+    <p>You can view and share documents here:</p>
+    <table>
+        <tr>
+          <th>Title</th>
+          <th>Created by</th>
+          <th>Content</th>
+          <th>Deletable</th>
+        </tr>
+        {% for document in documents %}
+            <tr>
+                    <td>{{ document.title }}</td>
+                    <td>{{document.owner.user.username}}</td>
+                    <td>{{document.content}}</td>
+                    <td>
+                        {% if document.owner == request.user.userprofile %}
+                        <!--  <form action="{% url 'delete_document' document.id %}" method="post"> -->
+                            <!-- {% csrf_token %} -->
+                            <!-- <button type="submit">Delete</button> -->
+                            <!-- </form> --> 
+                            
+                            <form action="{% url 'delete_document' document.id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit">Delete</button>
+                            </form>
+                        {% endif %}
+                        </td>
+            </tr>
+
+        {% endfor %}
+      </table>
+      
+    <a href="{% url 'logout' %}">Logout</a><br>
+    <a href='/upload'>Upload</a> Documents
+</body>
+</html>
